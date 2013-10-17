@@ -1,0 +1,3 @@
+system/lib/libril-qc-qmi-1.so
+system/lib/libril-qcril-hook-oem.so
+system/lib/libril.so
