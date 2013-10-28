@@ -1,4 +1,5 @@
 import init.smdk4x12.usb.rc
+import init.bt.rc
 
 on init
     mkdir /mnt/shell/emulated 0700 shell shell
@@ -154,14 +155,10 @@ on post-fs-data
     chown system radio /sys/class/sec/sec_touchkey/touchkey_dummy_btn1
     chown system radio /sys/class/sec/sec_touchkey/touchkey_dummy_btn3
     chown system radio /sys/class/sec/sec_touchkey/touchkey_dummy_btn5
-	chown system radio /sys/class/sec/sec_touchkey/touchkey_menu
     chown system radio /sys/class/sec/sec_touchkey/extra_button_event
     chown system radio /sys/class/sec/sec_touchkey/touchkey_button_all
-	chown system radio /sys/class/sec/sec_touchkey/touchkey_button_status
     chown system radio /sys/class/sec/sec_touchkey/touchkey_threshold
-	chown system radio /sys/class/sec/sec_touchkey/brightness
     chmod 0660 /sys/class/sec/sec_touchkey/extra_button_event
-	chown system system /sys/devices/virtual/sec/sec_touchkey/brightness
 
 # Permissions for Hall IC
 	chown system radio /sys/class/sec/sec_key/hall_detect
@@ -283,6 +280,7 @@ on post-fs-data
     
 # Permissions for Touchkey
 	chown system radio /sys/class/sec/sec_touchkey/enable_disable
+	chown system radio /sys/class/sec/sec_touchkey/touchkey_brightness
 	chown system radio /sys/class/sec/sec_touchkey/touchkey_menu
 	chown system radio /sys/class/sec/sec_touchkey/touchkey_back
 	chown system radio /sys/class/sec/sec_touchkey/touch_update
@@ -488,7 +486,7 @@ on property:ro.uart_debug=0
 service at_distributor /system/bin/at_distributor
     class main
     user root
-    group radio log
+    group radio lo
 
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
 # daemon will drop to user/group system/media_rw after initializing
@@ -531,7 +529,7 @@ service dhcpcd_p2p /system/bin/dhcpcd -aABKL
     disabled
     oneshot
 
-service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL
+service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
 	class main
 	disabled
 	oneshot
@@ -546,7 +544,7 @@ service iprenew_p2p /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service iprenew_bnep0 /system/bin/dhcpcd -n
+service iprenew_bt-pan /system/bin/dhcpcd -n
 	class main
 	disabled
 	oneshot
@@ -568,7 +566,7 @@ service cpboot-daemon /sbin/cbd -d
     class main
     user root
     group radio cache inet misc audio sdcard_rw log sdcard_r
-
+    
 service orientationd /system/bin/orientationd
     class main
     user compass

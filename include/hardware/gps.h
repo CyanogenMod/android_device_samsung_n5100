@@ -874,13 +874,13 @@ typedef struct {
 typedef struct {
     /** set to sizeof(GpsGeofencingInterface) */
     size_t          size;
-    
+
     /**
      * Opens the geofence interface and provides the callback routines
      * to the implemenation of this interface.
      */
     void  (*init)( GpsGeofenceCallbacks* callbacks );
-    
+
     /**
      * Add a geofence area. This api currently supports circular geofences.
      * Parameters:
@@ -915,14 +915,14 @@ typedef struct {
                                int last_transition, int monitor_transitions,
                                int notification_responsiveness_ms,
                                int unknown_timer_ms);
-    
+
     /**
      * Pause monitoring a particular geofence.
      * Parameters:
      *   geofence_id - The id for the geofence.
      */
     void (*pause_geofence) (int32_t geofence_id);
-    
+
     /**
      * Resume monitoring a particular geofence.
      * Parameters:
@@ -934,7 +934,7 @@ typedef struct {
      *       add_geofence_area call.
      */
     void (*resume_geofence) (int32_t geofence_id, int monitor_transitions);
-    
+
     /**
      * Remove a geofence area. After the function returns, no notifications
      * should be sent.
