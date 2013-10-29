@@ -147,7 +147,7 @@ on post-fs-data
     chown system system /sys/class/mdnie/mdnie/negative
     chown system system /sys/class/mdnie/mdnie/ebook
     chown system system /sys/class/mdnie/mdnie/accessibility
-    chown system system /sys/class/mdnie/mdnie/cabc
+    chown system media_rw /sys/class/mdnie/mdnie/cabc
     write /sys/class/mdnie/mdnie/scenario 0
     write /sys/class/mdnie/mdnie/mode 0
     
