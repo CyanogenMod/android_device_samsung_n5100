@@ -40,4 +40,4 @@ BOARD_RECOVERY_SWIPE_SWAPXY := true
 -include vendor/samsung/n5100/BoardConfigVendor.mk
 
 # assert
-TARGET_OTA_ASSERT_DEVICE := kona3gxx,n5100,GT-N5100,kona3g
+TARGET_OTA_ASSERT_DEVICE := GT-N5100,kona3g,n5100,kona3gxx
