@@ -255,6 +255,7 @@ on post-fs-data
     chown system radio /sys/class/power_supply/battery/batt_vol_adc_aver
     chown system radio /sys/class/power_supply/battery/batt_vol_adc_cal
     chown system radio /sys/class/power_supply/battery/batt_vol_aver
+    chown system radio /sys/class/power_supply/battery/charging_enabled
     chown system radio /sys/class/power_supply/battery/factory_mode
     chown system radio /sys/class/power_supply/battery/siop_activated
     chown system radio /sys/class/power_supply/battery/siop_level
@@ -507,6 +508,11 @@ service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard1 /s
 service fuse_usbdisk0 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk0 /storage/usbdisk0
     class late_start
     disabled
+
+service charger /sbin/healthd -c
+    class charger
+    critical
+    seclabel u:r:healthd:s0
 
 service p2p_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
