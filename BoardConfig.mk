@@ -23,6 +23,7 @@ LOCAL_PATH := device/samsung/n5100
 # Inline kernel building
 TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412
 TARGET_KERNEL_CONFIG := cyanogenmod_n5100_defconfig
+BOARD_RIL_CLASS := ../../../device/samsung/n5100/ril
 
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
@@ -40,4 +41,4 @@ BOARD_RECOVERY_SWIPE_SWAPXY := true
 -include vendor/samsung/n5100/BoardConfigVendor.mk
 
 # assert
-TARGET_OTA_ASSERT_DEVICE := kona3gxx,n5100,GT-N5100,kona3g
+TARGET_OTA_ASSERT_DEVICE := GT-N5100,kona3g,n5100,kona3gxx
