@@ -36,6 +36,7 @@ TARGET_RECOVERY_FSTAB := device/samsung/kona-common/rootdir/fstab.smdk4x12
 RECOVERY_FSTAB_VERSION := 2
 BOARD_RECOVERY_SWIPE := true
 BOARD_RECOVERY_SWIPE_SWAPXY := true
+# BOARD_CANT_BUILD_RECOVERY_FROM_BOOT_PATCH := true
 
 # inherit from the proprietary version
 -include vendor/samsung/n5100/BoardConfigVendor.mk
