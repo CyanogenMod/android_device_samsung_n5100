@@ -2,14 +2,14 @@ import init.smdk4x12.usb.rc
 import init.bt.rc
 
 on init
-    chmod 0701 /mnt/media_rw
-    mkdir /mnt/shell/emulated 0700 shell shell
-    mkdir /storage 0550 system sdcard_r
-    mkdir /storage/emulated 0555 root root
-    mkdir /storage/sdcard 0775 system system
-    mkdir /storage/usb 0775 system system
-    mkdir /mnt/media_rw/sdcard 0775 system system
-    mkdir /mnt/media_rw/usb 0775 system system
+#    chmod 0701 /mnt/media_rw
+#    mkdir /mnt/shell/emulated 0700 shell shell
+#    mkdir /storage 0550 system sdcard_r
+#    mkdir /storage/emulated 0555 root root
+#    mkdir /storage/sdcard 0775 system system
+#    mkdir /storage/usb 0775 system system
+#    mkdir /mnt/media_rw/sdcard 0775 system system
+#    mkdir /mnt/media_rw/usb 0775 system system
     mkdir /efs 0771 radio system
     mkdir /tombstones
     symlink /efs /factory
@@ -27,7 +27,7 @@ on init
 on fs
     mount_all /fstab.smdk4x12
 
-    setprop ro.crypto.fuse_sdcard true
+#    setprop ro.crypto.fuse_sdcard true
     
     chown radio system /efs
     chmod 0771 /efs
@@ -248,12 +248,12 @@ on post-fs-data
     chown system radio /sys/class/power_supply/battery/wpc_pin_state
 
 # CTIA event
-   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/call
-   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/video
-   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/music
-   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/browser
-   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/hotspot
-   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/camera
+#   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/call
+#   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/video
+#   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/music
+#   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/browser
+#   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/hotspot
+#   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/camera
    chown system radio /sys/class/power_supply/battery/talk_wcdma
    chown system radio /sys/class/power_supply/battery/talk_gsm
    chown system radio /sys/class/power_supply/battery/call
@@ -482,16 +482,16 @@ service at_distributor /system/bin/at_distributor
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
 # daemon will drop to user/group system/media_rw after initializing
 # underlying files in /data/media wil be created with user and group media_rw (1023)
-service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
-    class late_start
+# service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
+#     class late_start
 
-service fuse_sdcard /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard /storage/sdcard
-    class late_start
-    disabled
+# service fuse_sdcard /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard /storage/sdcard
+#    class late_start
+#    disabled
 
-service fuse_usb /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usb /storage/usb
-    class late_start
-    disabled
+# service fuse_usb /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usb /storage/usb
+#    class late_start
+#    disabled
 
 service charger /sbin/healthd -c
     class charger
@@ -565,7 +565,7 @@ service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     class main
     socket gps seqpacket 0660 gps system
     user gps
-    group system inet sdcard_rw
+    group system inet # sdcard_rw
     ioprio be 0
 
 service macloader /system/bin/macloader
@@ -576,7 +576,7 @@ service macloader /system/bin/macloader
 service cpboot-daemon /sbin/cbd -d
     class main
     user root
-    group radio cache inet misc audio sdcard_rw log sdcard_r
+    group radio cache inet misc audio # sdcard_rw log sdcard_r
     
 service orientationd /system/bin/orientationd
     class main
