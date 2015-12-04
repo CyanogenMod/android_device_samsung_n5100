@@ -2,12 +2,19 @@ import init.smdk4x12.usb.rc
 import init.bt.rc
 
 on init
-
+    chmod 0701 /mnt/media_rw
+    mkdir /mnt/shell/emulated 0700 shell shell
+    mkdir /storage 0550 system sdcard_r
+    mkdir /storage/emulated 0555 root root
+    mkdir /storage/sdcard 0775 system system
+    mkdir /storage/usb 0775 system system
+    mkdir /mnt/media_rw/sdcard 0775 system system
+    mkdir /mnt/media_rw/usb 0775 system system
     mkdir /efs 0771 radio system
     mkdir /tombstones
     symlink /efs /factory
 
-
+   
 # ko files for FM Radio
     #insmod /system/lib/modules/Si4709_driver.ko
 
@@ -20,15 +27,20 @@ on init
 on fs
     mount_all /fstab.smdk4x12
 
+    setprop ro.crypto.fuse_sdcard true
+    
     chown radio system /efs
     chmod 0771 /efs
 
 on post-fs-data
+     # we will remap this as /mnt/sdcard with the sdcard fuse tool
+     mkdir /data/media 0775 media_rw media_rw
+     chown media_rw media_rw /data/media
 
 # for AT distributor
     chown system radio /sys/module/cpuidle_exynos4/parameters/enable_mask
     chmod 0664 /sys/module/cpuidle_exynos4/parameters/enable_mask
-
+    
 # data/log
     mkdir /data/log 0775 system log
     chown system log /data/log
@@ -48,7 +60,7 @@ on post-fs-data
     mkdir /data/misc/radio 0775 radio system
     chmod 0775 /data/misc/radio
     mkdir /efs/imei 0775 radio system
-
+    
     mkdir /data/local/audio 0775 media audio
     chown media audio /data/local/audio
 
@@ -97,18 +109,18 @@ on post-fs-data
 
 # KeyDisabler
     chown system system /sys/class/sec/sec_touchkey/keypad_enable
-
+    
 # serial keyboard port
-    chown root system /dev/ttySAC3
-    chmod 0660 /dev/ttySAC3
-
+	chown root system /dev/ttySAC3
+	chmod 0660 /dev/ttySAC3
+	
 # for datarouter
     chown system system /dev/dun
     chown system system /dev/ttyGS0
     chown system system /dev/ttyGS1
     chown system system /dev/ttyGS2
     chown system system /dev/ttyGS3
-
+    
 # NFC
     setprop ro.nfc.port "I2C"
     chmod 0600 /dev/pn544
@@ -128,7 +140,7 @@ on post-fs-data
     chown system media_rw /sys/class/mdnie/mdnie/cabc
     write /sys/class/mdnie/mdnie/scenario 0
     write /sys/class/mdnie/mdnie/mode 0
-
+    
 # Permissions for Touchkey
     chown system radio /sys/class/sec/sec_touchkey/touchkey_dummy_btn1
     chown system radio /sys/class/sec/sec_touchkey/touchkey_dummy_btn3
@@ -139,7 +151,7 @@ on post-fs-data
     chmod 0660 /sys/class/sec/sec_touchkey/extra_button_event
 
 # Permissions for Hall IC
-    chown system radio /sys/class/sec/sec_key/hall_detect
+	chown system radio /sys/class/sec/sec_key/hall_detect
 
 # Permissions for System Server and daemons.
     chown radio system /sys/android_power/state
@@ -236,6 +248,12 @@ on post-fs-data
     chown system radio /sys/class/power_supply/battery/wpc_pin_state
 
 # CTIA event
+   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/call
+   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/video
+   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/music
+   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/browser
+   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/hotspot
+   chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/camera
    chown system radio /sys/class/power_supply/battery/talk_wcdma
    chown system radio /sys/class/power_supply/battery/talk_gsm
    chown system radio /sys/class/power_supply/battery/call
@@ -250,24 +268,24 @@ on post-fs-data
 
 # Permissions for touch
     chown system radio /sys/class/sec/tsp/cmd
-
+    
 # Permissions for Touchkey
-    chown system radio /sys/class/sec/sec_touchkey/enable_disable
-    chown system radio /sys/class/sec/sec_touchkey/touchkey_brightness
-    chown system radio /sys/class/sec/sec_touchkey/touchkey_menu
-    chown system radio /sys/class/sec/sec_touchkey/touchkey_back
-    chown system radio /sys/class/sec/sec_touchkey/touch_update
-    chown system radio /sys/class/sec/sec_touchkey/touch_version
-    chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_version_panel
-    chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_version_phone
-    chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_update_status
-    chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_update
-    chown system radio /sys/class/sec/sec_touchkey/touch_sensitivity
-    chown system radio /sys/class/sec/sec_touchkey/touchkey_threshold
-    chown system system /sys/devices/virtual/sec/sec_touchkey/brightness
+	chown system radio /sys/class/sec/sec_touchkey/enable_disable
+	chown system radio /sys/class/sec/sec_touchkey/touchkey_brightness
+	chown system radio /sys/class/sec/sec_touchkey/touchkey_menu
+	chown system radio /sys/class/sec/sec_touchkey/touchkey_back
+	chown system radio /sys/class/sec/sec_touchkey/touch_update
+	chown system radio /sys/class/sec/sec_touchkey/touch_version
+	chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_version_panel
+	chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_version_phone
+	chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_update_status
+	chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_update
+	chown system radio /sys/class/sec/sec_touchkey/touch_sensitivity
+	chown system radio /sys/class/sec/sec_touchkey/touchkey_threshold
+	chown system system /sys/devices/virtual/sec/sec_touchkey/brightness
 
 # Permissions for gpio_keys
-    chown radio system /sys/class/sec/sec_key/wakeup_keys
+    chown radio system /sys/class/sec/sec_key/wakeup_keys 
     write /sys/class/sec/sec_key/wakeup_keys 116,172,544
 
 # Switch Device
@@ -275,7 +293,7 @@ on post-fs-data
     chown system system /sys/class/sec/switch/usb_sel
     chown system system /sys/class/sec/switch/otg_test
     chown system radio /sys/class/sec/switch/adc
-
+    
 # IPC sysfs
     chown radio radio /sys/devices/virtual/misc/multipdp/waketime
     symlink /dev/block/mmcblk0p7 /dev/mbin0
@@ -374,9 +392,9 @@ on post-fs-data
     chown root shell /dev/tspdrv
 
 # IR_LED
-    chown system system /sys/class/sec/sec_ir/ir_send
-    chown system system /sys/class/sec/sec_ir/ir_send_result
-
+	chown system system /sys/class/sec/sec_ir/ir_send
+	chown system system /sys/class/sec/sec_ir/ir_send_result
+	
 # Permissions for backlight
     chown system system /sys/class/backlight/panel/brightness
 
@@ -418,7 +436,7 @@ on boot
 
 # touchscreen
     chown radio system /sys/class/sec/tsp/cmd
-    chown media_rw media_rw /sys/class/sec/tsp/set_jitter
+    chown media_rw media_rw /sys/class/sec/tsp/set_jitter    
 
 # epen
     chown radio system /sys/class/sec/sec_epen/epen_firm_update
@@ -427,16 +445,16 @@ on boot
     chown radio system /sys/class/sec/sec_epen/epen_reset
     chown system system /sys/class/sec/sec_epen/epen_saving_mode
     chmod 660 /sys/class/sec/sec_epen/epen_saving_mode
-
+    
 # wakeup keys
     chown radio system /sys/class/sec/sec_key/wakeup_keys
     write /sys/class/sec/sec_key/wakeup_keys 116,172
 
 # serial keyboard daemon
 service sec_keyboard /system/bin/sec_keyboard /dev/ttySAC3
-    class late_start
-    disabled
-    group system
+	class late_start
+	disabled
+	group system
 
 # SISO-ANDR_PERF :: START Changing scheduler to cfq and reseting cpu min freq to -1 after boot complete
 on property:sys.boot_completed=1
@@ -445,21 +463,35 @@ on property:sys.boot_completed=1
 # SISO-ANDR_PERF :: END
 
 on property:ro.uart_debug=0
-    start sec_keyboard
+	start sec_keyboard
+	
+# create filesystem if necessary
+#service setup_fs /system/bin/setup_fs \
+#            /dev/block/mmcblk0p3 \
+#            /dev/block/mmcblk0p4
+#    class core
+#    user root
+#    group root
+#    oneshot
 
-# RILD
-service_redefine ril-daemon /system/bin/logwrapper /system/bin/rild
-    class main
-    socket rild stream 660 root radio
-    socket rild-debug stream 660 radio system
-    user root
-    group radio cache inet misc audio sdcard_rw log sdcard_r
-    onrestart restart cpboot-daemon
-
-service at_distributor /system/bin/logwrapper /system/bin/at_distributor
+service at_distributor /system/bin/at_distributor
     class main
     user root
     group radio lo
+
+# create virtual SD card at /mnt/sdcard, based on the /data/media directory
+# daemon will drop to user/group system/media_rw after initializing
+# underlying files in /data/media wil be created with user and group media_rw (1023)
+service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
+    class late_start
+
+service fuse_sdcard /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard /storage/sdcard
+    class late_start
+    disabled
+
+service fuse_usb /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usb /storage/usb
+    class late_start
+    disabled
 
 service charger /sbin/healthd -c
     class charger
@@ -509,9 +541,9 @@ service dhcpcd_p2p /system/bin/dhcpcd -aABKL
     oneshot
 
 service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
-    class main
-    disabled
-    oneshot
+	class main
+	disabled
+	oneshot
 
 service iprenew_wlan0 /system/bin/dhcpcd -n
     class main
@@ -524,12 +556,12 @@ service iprenew_p2p /system/bin/dhcpcd -n
     oneshot
 
 service iprenew_bt-pan /system/bin/dhcpcd -n
-    class main
-    disabled
-    oneshot
-
+	class main
+	disabled
+	oneshot
+	
 # GPS
-service gpsd /system/bin/logwrapper /system/bin/gpsd -c /system/etc/gps.xml
+service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     class main
     socket gps seqpacket 0660 gps system
     user gps
@@ -539,13 +571,13 @@ service gpsd /system/bin/logwrapper /system/bin/gpsd -c /system/etc/gps.xml
 service macloader /system/bin/macloader
     class main
     oneshot
-
+    
 # cbd
-service cpboot-daemon /system/bin/logwrapper /sbin/cbd -d
+service cpboot-daemon /sbin/cbd -d
     class main
     user root
     group radio cache inet misc audio sdcard_rw log sdcard_r
-
+    
 service orientationd /system/bin/orientationd
     class main
     user compass
@@ -555,7 +587,7 @@ service geomagneticd /system/bin/geomagneticd
     class main
     user compass
     group system input
-
+    
 on property:init.svc.macloader=stopped
     chown system root /data/.cid.info
     chmod 0664 /data/.cid.info
@@ -563,7 +595,7 @@ on property:init.svc.macloader=stopped
     chmod 0660 /data/.rev
 # end of wifi
 
-service SMD-daemon /system/bin/logwrapper /system/bin/smdexe
+service SMD-daemon /system/bin/smdexe
     class main
     user root
     group system radio inet net_raw
