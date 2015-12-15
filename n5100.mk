@@ -24,7 +24,8 @@ PRODUCT_COPY_FILES += \
 
 # Packages
 PRODUCT_PACKAGES += \
-    libsecril-client-sap
+    libsecril-client-sap \
+    libsamsung_symbols
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
