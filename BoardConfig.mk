@@ -24,6 +24,7 @@ LOCAL_PATH := device/samsung/n5100
 TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412
 TARGET_KERNEL_CONFIG := cyanogenmod_n5100_defconfig
 BOARD_RIL_CLASS := ../../../device/samsung/n5100/ril
+COMMON_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
 
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
