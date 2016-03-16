@@ -1,24 +1,13 @@
 import init.smdk4x12.usb.rc
-import init.bt.rc
 
 on init
 
-    export LD_SHIM_LIBS /system/lib/libril.so|libsamsung_symbols.so
-
-    chmod 0701 /mnt/media_rw
-    chown root root /mnt/media_rw
-    mkdir /storage 0550 system sdcard_r
-    mkdir /storage/sdcard1 0775 system system
-    mkdir /storage/usbdisk0 0775 system system
-    mkdir /mnt/media_rw/sdcard1 0775 system system
-    mkdir /mnt/media_rw/usbdisk0 0775 system system
-
-    export SECONDARY_STORAGE /storage/sdcard1:/storage/usbdisk0
+    export LD_SHIM_LIBS /system/lib/libril.so|libsamsung_symbols.so:/system/bin/gpsd|libsamsung_symbols.so
 
     symlink /storage/sdcard1 /extSdCard
     symlink /storage/sdcard1 /mnt/extSdCard
-    symlink /storage/usbdisk0 /usbdisk0
-    symlink /storage/usbdisk0 /mnt/usbdisk0
+    symlink /storage/usb /usb
+    symlink /storage/usb /mnt/usb
 
     mkdir /efs 0771 radio system
     mkdir /tombstones
@@ -31,16 +20,10 @@ on init
 on fs
     mount_all /fstab.smdk4x12
 
-    setprop ro.crypto.fuse_sdcard true
-
     chown radio system /efs
     chmod 0771 /efs
 
 on post-fs-data
-    # we will remap this as /mnt/sdcard with the sdcard fuse tool
-    mkdir /data/media 0775 media_rw media_rw
-    chown media_rw media_rw /data/media
-
 # for AT distributor
     chown system radio /sys/module/cpuidle_exynos4/parameters/enable_mask
     chmod 0664 /sys/module/cpuidle_exynos4/parameters/enable_mask
@@ -51,7 +34,7 @@ on post-fs-data
     chmod 0775 /data/log
     chmod 0775 /data/anr
 
-    # create data/gps for GPS demon
+# create data/gps for GPS demon
     chown root system /dev/ttySAC1
     chmod 0660 /dev/ttySAC1
     chown root system /sys/class/sec/gps/GPS_PWR_EN/value
@@ -474,17 +457,6 @@ service at_distributor /system/bin/logwrapper /system/bin/at_distributor
     user root
     group radio log
 
-# create virtual SD card at /mnt/sdcard, based on the /data/media directory
-# daemon will drop to user/group system/media_rw after initializing
-# underlying files in /data/media wil be created with user and group media_rw (1023)
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard1 /storage/sdcard1
-    class late_start
-    disabled
-
-service fuse_usbdisk0 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk0 /storage/usbdisk0
-    class late_start
-    disabled
-
 service charger /sbin/healthd -c
     class charger
     critical
@@ -552,7 +524,6 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     disabled
     oneshot
 
-# GPS
 service gpsd /system/bin/logwrapper /system/bin/gpsd -c /system/etc/gps.xml
     class main
     socket gps seqpacket 0660 gps system
@@ -564,7 +535,6 @@ service macloader /system/bin/logwrapper /system/bin/macloader
     class main
     oneshot
 
-# cbd
 service cpboot-daemon /system/bin/logwrapper /system/bin/logwrapper /sbin/cbd -d -p7
     class main
     user root
@@ -588,6 +558,11 @@ on property:init.svc.macloader=stopped
 # end of wifi
 
 service SMD-daemon /system/bin/logwrapper /system/bin/smdexe
+    class main
+    user root
+    group system radio inet net_raw
+
+service DR-daemon /system/bin/logwrapper /system/bin/ddexe
     class main
     user root
     group system radio inet net_raw
