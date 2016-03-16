@@ -15,13 +15,33 @@
  */
 
 #include <stdlib.h>
+#include <malloc.h>
 
-// android::Parcel::writeString16(unsigned short const*, unsigned int)
 extern "C" int _ZN7android6Parcel13writeString16EPKDsj();
-
 extern "C" int _ZN7android6Parcel13writeString16EPKtj(){
-
-    return _ZN7android6Parcel13writeString16EPKDsj();
-
+	return _ZN7android6Parcel13writeString16EPKDsj();
 }
 
+extern "C" int _ZN7android13SensorManager5sLockE;
+extern "C" int _ZN7android9SingletonINS_13SensorManagerEE5sLockE = _ZN7android13SensorManager5sLockE;
+
+extern "C" int _ZN7android13SensorManager17sPackageInstancesE;
+extern "C" int _ZN7android9SingletonINS_13SensorManagerEE9sInstanceE = _ZN7android13SensorManager17sPackageInstancesE;
+
+extern "C" int _ZN7android13SensorManagerD1Ev();
+extern "C" int _ZN7android13SensorManagerC1Ev(){
+	return _ZN7android13SensorManagerD1Ev();
+}
+
+extern "C" int _ZN7android13SensorManager16createEventQueueENS_7String8Ei();
+extern "C" int _ZN7android13SensorManager16createEventQueueEv(){
+	return _ZN7android13SensorManager16createEventQueueENS_7String8Ei();
+}
+
+extern "C" void *CRYPTO_malloc(int num, const char *file, int line);
+extern "C" void *CRYPTO_malloc(int num, const char *file, int line){
+	if (num <= 0)
+		return NULL;
+	else
+		return malloc(num);
+}
