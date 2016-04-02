@@ -452,10 +452,11 @@ on property:sys.boot_completed=1
 on property:ro.uart_debug=0
     start sec_keyboard
 
-service at_distributor /system/bin/logwrapper /system/bin/at_distributor
+service at_distributor /system/bin/at_distributor
     class main
     user root
     group radio log
+    seclabel u:r:at_distributor:s0
 
 service charger /sbin/healthd -c
     class charger
@@ -524,31 +525,36 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service gpsd /system/bin/logwrapper /system/bin/gpsd -c /system/etc/gps.xml
+service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     class main
     socket gps seqpacket 0660 gps system
     user gps
     group system inet sdcard_rw
     ioprio be 0
+    seclabel u:r:gpsd:s0
 
-service macloader /system/bin/logwrapper /system/bin/macloader
+service macloader /system/bin/macloader
     class main
     oneshot
+    seclabel u:r:macloader:s0
 
-service cpboot-daemon /system/bin/logwrapper /system/bin/logwrapper /sbin/cbd -d -p7
+service cpboot-daemon /sbin/cbd -d -p7
     class main
     user root
     group system radio cache inet misc audio sdcard_rw log sdcard_r
+    seclabel u:r:cpboot-daemon:s0
 
-service orientationd /system/bin/logwrapper /system/bin/orientationd
+service orientationd /system/bin/orientationd
     class main
     user compass
     group input
+    seclabel u:r:orientationd:s0
 
-service geomagneticd /system/bin/logwrapper /system/bin/geomagneticd
+service geomagneticd /system/bin/geomagneticd
     class main
     user compass
     group system input
+    seclabel u:r:geomagneticd:s0
 
 on property:init.svc.macloader=stopped
     chown system root /data/.cid.info
@@ -557,12 +563,14 @@ on property:init.svc.macloader=stopped
     chmod 0660 /data/.rev
 # end of wifi
 
-service SMD-daemon /system/bin/logwrapper /system/bin/smdexe
+service SMD-daemon /system/bin/smdexe
     class main
     user root
     group system radio inet net_raw
+    seclabel u:r:SMD-daemon:s0
 
-service DR-daemon /system/bin/logwrapper /system/bin/ddexe
+service DR-daemon /system/bin/ddexe
     class main
     user root
     group system radio inet net_raw
+    seclabel u:r:DR-daemon:s0
