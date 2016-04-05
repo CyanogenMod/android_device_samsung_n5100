@@ -1,27 +1,11 @@
 import init.smdk4x12.usb.rc
 
 on init
-
     export LD_SHIM_LIBS /system/lib/libril.so|libsamsung_symbols.so:/system/bin/gpsd|libsamsung_symbols.so
-
-    symlink /storage/sdcard1 /extSdCard
-    symlink /storage/sdcard1 /mnt/extSdCard
-    symlink /storage/usb /usb
-    symlink /storage/usb /mnt/usb
-
-    mkdir /efs 0771 radio system
-    mkdir /tombstones
-    symlink /efs /factory
 
     # Vibetonz
     export VIBE_PIPE_PATH /dev/pipes
     mkdir /dev/pipes 0771 shell shell
-
-on fs
-    mount_all /fstab.smdk4x12
-
-    chown radio system /efs
-    chmod 0771 /efs
 
 on post-fs-data
 # for AT distributor
