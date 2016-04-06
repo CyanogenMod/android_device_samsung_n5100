@@ -1,6 +1,5 @@
-import init.smdk4x12.usb.rc
-
 on init
+
     export LD_SHIM_LIBS /system/lib/libril.so|libsamsung_symbols.so:/system/bin/gpsd|libsamsung_symbols.so
 
     # Vibetonz
@@ -8,6 +7,7 @@ on init
     mkdir /dev/pipes 0771 shell shell
 
 on post-fs-data
+
 # for AT distributor
     chown system radio /sys/module/cpuidle_exynos4/parameters/enable_mask
     chmod 0664 /sys/module/cpuidle_exynos4/parameters/enable_mask
