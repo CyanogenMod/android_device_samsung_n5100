@@ -12,6 +12,21 @@ on post-fs-data
     chown system radio /sys/module/cpuidle_exynos4/parameters/enable_mask
     chmod 0664 /sys/module/cpuidle_exynos4/parameters/enable_mask
 
+# geomagneticd
+    write /data/system/yas.cfg 0
+    write /data/system/yas-backup.cfg 0
+
+# gpsd
+    mkdir /data/system/gps 771 system system
+    write /data/system/gps/.gpslogd.pipe 0
+    write /data/system/gps/.gpsd.lock 0
+    write /data/system/gps/.gps.interface.pipe.to_gpsd 0
+    write /data/system/gps/.gps.interface.pipe.to_jni 0
+
+# bluetooth
+    write /efs/bluetooth/bt_addr 0
+
+# audio
     mkdir /data/local/audio 0775 media audio
     chown media audio /data/local/audio
 
@@ -147,12 +162,10 @@ on post-fs-data
 # for wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
 
-    restorecon_recursive /efs
-    restorecon /system/bin/gpsd
-    restorecon /system/bin/geomagneticd
-    restorecon_recursive /data/system/gps
     restorecon /data/system/yas.cfg
     restorecon /data/system/yas-backup.cfg
+    restorecon_recursive /data/system/gps
+    restorecon_recursive /efs/bluetooth
 
 on boot
 
