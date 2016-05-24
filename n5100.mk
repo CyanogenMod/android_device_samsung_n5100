@@ -24,7 +24,6 @@ PRODUCT_COPY_FILES += \
 
 # Packages
 PRODUCT_PACKAGES += \
-    libsamsung_symbols \
     ril-wrapper
 
 # RIL
