@@ -19,6 +19,10 @@ on post-fs-data
 # geomagneticd
     write /data/system/yas.cfg 0
     write /data/system/yas-backup.cfg 0
+    chown system input /data/system/yas.cfg
+    chown system input /data/system/yas-backup.cfg
+    chmod 0664 /data/system/yas.cfg
+    chmod 0664 /data/system/yas-backup.cfg
 
 # gpsd
     mkdir /data/system/gps 775 root root
