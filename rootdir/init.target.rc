@@ -24,12 +24,21 @@ on post-fs-data
     chmod 0664 /data/system/yas.cfg
     chmod 0664 /data/system/yas-backup.cfg
 
-# gpsd
-    mkdir /data/system/gps 775 root root
-    write /data/system/gps/.gpslogd.pipe 0
-    write /data/system/gps/.gpsd.lock 0
-    write /data/system/gps/.gps.interface.pipe.to_gpsd 0
-    write /data/system/gps/.gps.interface.pipe.to_jni 0
+# GPS
+    chown root system /dev/ttySAC1
+    chmod 0660 /dev/ttySAC1
+    chown root system /sys/class/sec/gps/GPS_PWR_EN/value
+    chmod 0664 /sys/class/sec/gps/GPS_PWR_EN/value
+
+    mkdir /data/system 0771 system system
+    chown system system /data/system
+    mkdir /data/system/gps 0771 system system
+    chown system system /data/system/gps
+
+    rm /data/gps_started
+    rm /data/glonass_started
+    rm /data/smd_started
+    rm /data/sv_cno.info
 
 # bluetooth
     write /efs/bluetooth/bt_addr 0
@@ -209,10 +218,10 @@ service at_distributor /system/bin/at_distributor
     seclabel u:r:at_distributor:s0
 
 service gpsd /system/bin/gpsd -c /system/etc/gps.xml
-    class main
-    socket gps seqpacket 0775 root root
-    user root
-    group system radio inet log cache misc audio net_raw sdcard_rw
+    class late_start
+    socket gps seqpacket 0775 root gps
+    user gps
+    group system radio inet log cache misc audio net_raw sdcard_rw gps
     ioprio be 0
     seclabel u:r:gpsd:s0
 
@@ -234,14 +243,14 @@ service geomagneticd /system/bin/geomagneticd
     group system radio inet log input cache misc net_raw sdcard_rw
     seclabel u:r:geomagneticd:s0
 
-service SMD-daemon /system/bin/smdexe
-    class main
-    user root
-    group system radio inet log cache misc audio net_raw sdcard_rw
-    seclabel u:r:SMD-daemon:s0
+#service SMD-daemon /system/bin/smdexe
+#    class main
+#    user root
+#    group system radio inet log cache misc audio net_raw sdcard_rw
+#    seclabel u:r:SMD-daemon:s0
 
-service DR-daemon /system/bin/ddexe
-    class main
-    user root
-    group system radio inet log cache misc audio net_raw sdcard_rw
-    seclabel u:r:DR-daemon:s0
+#service DR-daemon /system/bin/ddexe
+#    class main
+#    user root
+#    group system radio inet log cache misc audio net_raw sdcard_rw
+#    seclabel u:r:DR-daemon:s0
