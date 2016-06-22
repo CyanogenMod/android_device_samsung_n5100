@@ -217,6 +217,16 @@ on property:sys.boot_completed=1
     chmod 0660 /sys/devices/system/cpu/cpufreq/pegasusq/min_cpu_lock
     chmod 0660 /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_lock
 
+on property:sys.boot_completed=1
+    stop at_distributor
+    stop cpboot-daemon
+    stop SMD-daemon
+    stop rild
+    start at_distributor
+    start cpboot-daemon
+    start SMD-daemon
+    start rild
+
 ############################
 ############################
 
@@ -264,9 +274,3 @@ service SMD-daemon /system/bin/smdexe
     user root
     group system radio inet log cache misc audio net_raw sdcard_rw gps
     seclabel u:r:SMD-daemon:s0
-
-service DR-daemon /system/bin/ddexe
-    class main
-    user root
-    group system radio inet log cache misc audio net_raw sdcard_rw gps
-    seclabel u:r:DR-daemon:s0
