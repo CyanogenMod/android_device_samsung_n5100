@@ -57,7 +57,7 @@
     </integer-array>
 
     <!-- Boolean to enable stk functionality on Samsung phones -->
-    <!-- <bool name="config_samsung_stk">true</bool> -->
+    <bool name="config_samsung_stk">true</bool>
 
     <!-- Control the behavior when the user long presses the home button.
             0 - Nothing
@@ -82,4 +82,12 @@
          policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
     -->
     <integer name="config_doubleTapOnHomeBehavior">2</integer>
+
+    <!-- The RadioAccessFamilies supported by the device.
+         Empty is viewed as "all".  Only used on devices which
+         don't support RIL_REQUEST_GET_RADIO_CAPABILITY
+         format is UMTS|LTE|...
+    -->
+    <string translatable="false" name="config_radio_access_family">GPRS|EDGE|WCDMA</string>
+
 </resources>
