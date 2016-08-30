@@ -10,38 +10,9 @@ on init
     export VIBE_PIPE_PATH /dev/pipes
     mkdir /dev/pipes 0771 shell shell
 
-    write /sys/module/link_device_lli/parameters/pm_enable 0
-
-    write /sys/class/net/rmnet0/queues/rx-0/rps_cpus 1
-    write /sys/class/net/rmnet1/queues/rx-0/rps_cpus 1
-    write /sys/class/net/rmnet2/queues/rx-0/rps_cpus 1
-    write /sys/class/net/rmnet3/queues/rx-0/rps_cpus 1
-    write /sys/class/net/rmnet4/queues/rx-0/rps_cpus 1
-    write /sys/class/net/rmnet5/queues/rx-0/rps_cpus 1
-    write /sys/class/net/rmnet6/queues/rx-0/rps_cpus 1
-    write /sys/class/net/rmnet7/queues/rx-0/rps_cpus 1
-    write /proc/sys/net/core/netdev_max_backlog 8192
-
-    chown radio radio sys/devices/virtual/misc/multipdp/waketime
-    chmod 0660 /sys/devices/virtual/misc/umts_dm0/dm_state
-    chown radio system /sys/devices/virtual/misc/umts_dm0/dm_state
-
-    # msockets for modem sockets with same permissions as /dev/sockets
-    # except that the owner is system and part of radio group
-    mkdir /dev/socket/msockets 0751 system radio
-    chown system radio /dev/socket/msockets
-    write /sys/module/modem_modemctl_device_m74xx/parameters/cp_watchdog_enable 1
-
-    # EHCI runtime enable for LPA
-    write /sys/devices/platform/s5p-ehci/power/control auto
-
 ############################
 on post-fs-data
 ############################
-
-# for AT distributor
-    chown system radio /sys/module/cpuidle_exynos4/parameters/enable_mask
-    chmod 0664 /sys/module/cpuidle_exynos4/parameters/enable_mask
 
 # GPS
     chown root system /dev/ttySAC1
@@ -136,7 +107,6 @@ on post-fs-data
 
 # IPC sysfs
     chown system system /sys/devices/virtual/misc/multipdp/waketime
-    symlink /dev/block/mmcblk0p7 /dev/mbin0
 
 # Input Events
     chown system input /sys/class/input/input2/delay
@@ -265,9 +235,3 @@ service geomagneticd /system/bin/geomagneticd
     user compass
     group system input
     seclabel u:r:geomagneticd:s0
-
-service TvoutService_C /system/bin/bintvoutservice
-    class main
-    user system
-    group system
-#    seclabel u:r:usbtohdmi:s0
