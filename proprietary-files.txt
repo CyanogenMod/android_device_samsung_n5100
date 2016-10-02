@@ -1,11 +1,8 @@
-system/bin/at_distributor
 system/bin/geomagneticd
 system/bin/gpsd
+system/bin/cbd
 system/bin/orientationd
-system/bin/smdexe
-system/lib/libomission_avoidance.so
-system/lib/libsec-ril.so
-system/lib/libwrappergps.so
 system/lib/libfactoryutil.so
+system/lib/libwrappergps.so
 system/lib/hw/gps.default.so
-sbin/cbd
+system/lib/libsec-ril.so
