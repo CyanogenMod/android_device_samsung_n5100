@@ -29,10 +29,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.call_ring.delay=3000
 
 PRODUCT_PACKAGES += \
-    libsecril-client \
-    libsecril-client-sap
-
-PRODUCT_PACKAGES += \
     libxml2 \
     libprotobuf-cpp-full
 
