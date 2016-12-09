@@ -22,6 +22,8 @@ on init
 
     copy /efs/wifi/.mac.cob /efs/wifi/.mac.info
 
+    start macloader
+
 ############################
 on post-fs-data
 ############################
