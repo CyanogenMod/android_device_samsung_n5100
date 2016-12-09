@@ -10,13 +10,21 @@ on init
     export VIBE_PIPE_PATH /dev/pipes
     mkdir /dev/pipes 0771 shell shell
 
+# macloader
+
+    rm /data/.cid.info
+
+    chown system system /efs/wifi/.mac.cob
+    chown system system /efs/wifi/.mac.info
+
+    chmod 0666 /efs/wifi/.mac.cob
+    chmod 0666 /efs/wifi/.mac.info
+
+    copy /efs/wifi/.mac.cob /efs/wifi/.mac.info
+
 ############################
 on post-fs-data
 ############################
-
-# wifi
-    write /data/.cid.info 0
-    restorecon /data/.cid.info
 
 # GPS
     chown root system /dev/ttySAC1
@@ -185,12 +193,6 @@ on boot
 # epen
     chown system system /sys/class/sec/sec_epen/epen_saving_mode
     chmod 660 /sys/class/sec/sec_epen/epen_saving_mode
-
-on property:init.svc.macloader=stopped
-    chown system root /data/.cid.info
-    chmod 0664 /data/.cid.info
-    chown system root /data/.rev
-    chmod 0660 /data/.rev
 
 # SISO-ANDR_PERF :: START Changing scheduler to cfq and reseting cpu min freq to -1 after boot complete
 on property:sys.boot_completed=1
