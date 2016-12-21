@@ -18,19 +18,9 @@ LOCAL_PATH := device/samsung/n5100
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
-# Init files
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/init.target.rc:root/init.target.rc
-
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.telephony.ril_class=SamsungExynos4RIL \
-    ro.telephony.call_ring.multiple=false \
-    ro.telephony.call_ring.delay=3000
-
-PRODUCT_PACKAGES += \
-    libxml2 \
-    libprotobuf-cpp-full
+    ro.telephony.ril_class=SamsungExynos4RIL
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
